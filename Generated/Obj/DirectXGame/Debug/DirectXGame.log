@@ -9,10 +9,11 @@
   compilation object save succeeded; see C:\Users\GSuser\OneDrive\デスクトップ\AL3Test\Generated\Outputs\Debug\SpritePS.cso
   compilation object save succeeded; see C:\Users\GSuser\OneDrive\デスクトップ\AL3Test\Generated\Outputs\Debug\SpriteVS.cso
   ImGuiManager.cpp
-  WorldTransform.cpp
+  WorldTransformEx.cpp
+  Player.cpp
   DirectXCommon.cpp
   WinApp.cpp
   main.cpp
-  MatrixMath.cpp
+  MathUtilityForText.cpp
   GameScene.cpp
   DirectXGame.vcxproj -> C:\Users\GSuser\OneDrive\デスクトップ\AL3Test\Generated\Outputs\Debug\DirectXGame.exe

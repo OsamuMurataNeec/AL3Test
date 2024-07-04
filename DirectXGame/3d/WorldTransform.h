@@ -35,10 +35,6 @@ public:
 	/// </summary>
 	void Initialize();
 	/// <summary>
-	///	更新処理
-	/// </summary>
-	void UpdateMatrix();
-	/// <summary>
 	/// 定数バッファ生成
 	/// </summary>
 	void CreateConstBuffer();
@@ -55,7 +51,10 @@ public:
 	/// </summary>
 	/// <returns>定数バッファ</returns>
 	const Microsoft::WRL::ComPtr<ID3D12Resource>& GetConstBuffer() const { return constBuffer_; }
-public:
+	/// <summary>
+	/// 行列を計算・転送する
+	/// </summary>
+	void UpdateMatrix();
 
 private:
 	// 定数バッファ
