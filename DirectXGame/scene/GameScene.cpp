@@ -15,6 +15,7 @@ GameScene::~GameScene() {
 			worldTransformBlock = nullptr;
 		}
 	}
+
 	delete modelPlayer_;
 	delete modelBlock_;
 	delete debugCamera_;
