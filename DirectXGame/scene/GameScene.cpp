@@ -15,14 +15,11 @@ GameScene::~GameScene() {
 			worldTransformBlock = nullptr;
 		}
 	}
-
 	delete modelPlayer_;
 	delete modelBlock_;
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete mapChipField_;
-
-
 }
 
 void GameScene::Initialize() {
@@ -45,7 +42,8 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(modelPlayer_, &viewProjection_);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 18);
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 
 	viewProjection_.Initialize();
 

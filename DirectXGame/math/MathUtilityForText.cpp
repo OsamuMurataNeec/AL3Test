@@ -1,5 +1,6 @@
 #include "MathUtilityForText.h"
 #include <cmath>
+#include <numbers>
 
 Vector3& operator+=(Vector3& lhv, const Vector3& rhv) {
 	lhv.x += rhv.x;
@@ -119,4 +120,24 @@ Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result = m1;
 
 	return result *= m2;
+}
+
+float Lerp(float x1, float x2, float t) { return (1.0f - t) * x1 + t * x2; }
+
+float EaseIn(float x1, float x2, float t) { 
+	float easedT = t * t;
+
+	return Lerp(x1, x2, easedT);
+}
+
+float EaseOut(float x1, float x2, float t) { 
+	float easedT = 1.0f - std::powf(1.0f - t, 3.0f);
+
+	return Lerp(x1, x2, easedT);
+}
+
+float EaseInOut(float x1, float x2, float t) {
+	float easedT = -(std::cosf(std::numbers::pi_v<float> * t) - 1.0f) / 2.0f;
+
+	return Lerp(x1, x2, easedT);
 }

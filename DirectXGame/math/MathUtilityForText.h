@@ -35,3 +35,11 @@ Matrix4x4& operator*=(Matrix4x4& lhm, const Matrix4x4& rhm);
 
 // 2項演算子オーバーロード
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
+
+float Lerp(float x1, float x2, float t);
+
+float EaseIn(float x1, float x2, float t);
+
+float EaseOut(float x1, float x2, float t);
+
+float EaseInOut(float x1, float x2, float t);
