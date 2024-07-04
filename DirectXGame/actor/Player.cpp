@@ -62,6 +62,32 @@ void Player::Update() {
 
 void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_); }
 
+Vector3 Player::GetWorldPosition() {
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+	return worldPos;
+}
+
+AABB Player::GetAABB() {
+	Vector3 worldPos = GetWorldPosition();
+
+	AABB aabb;
+
+	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
+
+	return aabb;
+}
+
+void Player::OnCollision(const Enemy* enemy) {
+	(void)enemy;
+	// ジャンプ初速
+	velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0);
+}
+
 void Player::InputMove() {
 	if (onGround_) {
 
@@ -346,7 +372,6 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 
 			// 落下開始
 			if (!ground) {
-				DebugText::GetInstance()->ConsolePrintf("jump");
 				onGround_ = false;
 			}
 		}
@@ -355,7 +380,6 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 		if (info.landing) {
 			velocity_.x *= (1.0f - kAttenuationLanding);
 			velocity_.y = 0.0f;
-			DebugText::GetInstance()->ConsolePrintf("onGround");
 			onGround_ = true;
 		}
 	}

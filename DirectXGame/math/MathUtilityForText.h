@@ -5,6 +5,7 @@
 /// MT3準拠で、KamataEngine内部の数学ライブラリと重複する。
 ///
 
+#include "AABB.h"
 #include "Matrix4x4.h"
 #include "Vector3.h"
 
@@ -56,3 +57,11 @@ float EaseOut(float x1, float x2, float t);
 float EaseInOut(float x1, float x2, float t);
 
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+// ノルム(長さ)を求める
+float Length(const Vector3& v);
+
+// 正規化する
+Vector3 Normalize(const Vector3& v);
+
+bool IsCollision(const AABB& aabb1, const AABB& aabb2);

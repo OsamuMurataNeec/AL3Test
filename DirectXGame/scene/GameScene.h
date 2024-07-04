@@ -12,6 +12,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include <list>
 #include <vector>
 
 /// <summary>
@@ -73,7 +74,12 @@ private: // メンバ変数
 	MapChipField* mapChipField_;
 	CameraController* cameraController = nullptr;
 
-	Enemy* enemy_ = nullptr;
+	std::list<Enemy*> enemies_;
 
 	void GenerateBlocks();
+
+    /// <summary>
+	/// 衝突判定と応答
+	/// </summary>
+	void CheckAllCollisions();
 };
