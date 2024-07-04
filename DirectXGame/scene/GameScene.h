@@ -2,10 +2,11 @@
 
 #include "Audio.h"
 #include "CameraController.h"
-#include "DebugCamera.h"
 #include "DeathParticles.h"
+#include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
+#include "Fade.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
@@ -50,10 +51,11 @@ public: // メンバ関数
 	bool IsFinished() const { return finished_; }
 
 private: // メンバ変数
-
 	enum class Phase {
-		kPlay,	// ゲームプレイ
-		kDeath,	// デス演出
+		kFadeIn,  // フェードイン
+		kPlay,    // ゲームプレイ
+		kDeath,   // デス演出
+		kFadeOut, // フェードアウト
 	};
 
 	DirectXCommon* dxCommon_ = nullptr;
@@ -88,6 +90,7 @@ private: // メンバ変数
 
 	bool finished_ = false;
 	Phase phase_;
+	Fade* fade_ = nullptr;
 
 	DeathParticles* deathParticles_ = nullptr;
 
@@ -99,7 +102,7 @@ private: // メンバ変数
 
 	void UpdateBlocks();
 
-    /// <summary>
+	/// <summary>
 	/// 衝突判定と応答
 	/// </summary>
 	void CheckAllCollisions();

@@ -27,9 +27,14 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 	delete mapChipField_;
 	delete cameraController;
+	delete fade_;
 }
 
 void GameScene::Initialize() {
+
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -83,7 +88,7 @@ void GameScene::Initialize() {
 
 	enemies_.push_back(newEnemy);
 
-	phase_ = Phase::kPlay;
+	phase_ = Phase::kFadeIn;
 }
 
 void GameScene::Update() {
@@ -91,6 +96,28 @@ void GameScene::Update() {
 	ChangePhase();
 
 	switch (phase_) {
+	case Phase::kFadeIn:
+		fade_->Update();
+		if (fade_->IsFinished()) {
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+			phase_ = Phase::kPlay;
+		}
+
+		worldTransformSkydome_.UpdateMatrix();
+
+		// 自キャラの更新
+		player_->Update();
+
+		cameraController->Update();
+
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
+		}
+
+		UpdateCamera();
+
+		UpdateBlocks();
+		break;
 	case Phase::kPlay:
 		worldTransformSkydome_.UpdateMatrix();
 
@@ -111,7 +138,7 @@ void GameScene::Update() {
 		break;
 	case Phase::kDeath:
 		if (deathParticles_ && deathParticles_->IsFinished()) {
-			finished_ = true;
+			phase_ = Phase::kFadeOut;
 		}
 
 		worldTransformSkydome_.UpdateMatrix();
@@ -122,6 +149,20 @@ void GameScene::Update() {
 
 		if (deathParticles_) {
 			deathParticles_->Update();
+		}
+
+		UpdateCamera();
+		break;
+	case Phase::kFadeOut:
+		fade_->Update();
+		if (fade_->IsFinished()) {
+			finished_ = true;
+		}
+
+		worldTransformSkydome_.UpdateMatrix();
+
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
 		}
 
 		UpdateCamera();
@@ -193,6 +234,8 @@ void GameScene::Draw() {
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
+	fade_->Draw(commandList);
 
 #pragma endregion
 }

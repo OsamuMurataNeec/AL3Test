@@ -15,6 +15,7 @@
   Enemy.cpp
   Player.cpp
   DirectXCommon.cpp
+  Fade.cpp
   WinApp.cpp
   main.cpp
   MathUtilityForText.cpp
