@@ -20,6 +20,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete mapChipField_;
+	delete cameraController;
 }
 
 void GameScene::Initialize() {
@@ -57,6 +58,14 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
 	GenerateBlocks();
+
+	cameraController = new CameraController;
+	cameraController->Initialize();
+	cameraController->SetTarget(player_);
+	cameraController->Reset();
+
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController->SetMovableArea(cameraArea);
 }
 
 void GameScene::Update() {
@@ -65,6 +74,8 @@ void GameScene::Update() {
 
 	// 自キャラの更新
 	player_->Update();
+
+	cameraController->Update();
 
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
@@ -79,8 +90,10 @@ void GameScene::Update() {
 		// ビュープロジェクションの転送
 		viewProjection_.TransferMatrix();
 	} else {
-		// ビュープロジェクション行列の更新と転送
-		viewProjection_.UpdateMatrix();
+		viewProjection_.matView = cameraController->GetViewProjection().matView;
+		viewProjection_.matProjection = cameraController->GetViewProjection().matProjection;
+		// ビュープロジェクションの転送
+		viewProjection_.TransferMatrix();
 	}
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {

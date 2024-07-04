@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Audio.h"
+#include "CameraController.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -68,6 +69,7 @@ private: // メンバ変数
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	MapChipField* mapChipField_;
+	CameraController* cameraController = nullptr;
 
 	void GenerateBlocks();
 };
