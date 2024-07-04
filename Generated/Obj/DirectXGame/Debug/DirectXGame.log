@@ -20,4 +20,5 @@
   MathUtilityForText.cpp
   MapChipField.cpp
   GameScene.cpp
+  TitleScene.cpp
   DirectXGame.vcxproj -> C:\Users\GSuser\OneDrive\デスクトップ\AL3Test\Generated\Outputs\Debug\DirectXGame.exe

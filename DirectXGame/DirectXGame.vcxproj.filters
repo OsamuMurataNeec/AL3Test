@@ -105,6 +105,9 @@
     <ClCompile Include="actor\DeathParticles.cpp">
       <Filter>ソース ファイル\actor</Filter>
     </ClCompile>
+    <ClCompile Include="scene\TitleScene.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="actor\DeathParticles.h">
       <Filter>ヘッダー ファイル\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

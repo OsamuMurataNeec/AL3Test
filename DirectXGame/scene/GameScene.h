@@ -47,6 +47,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	bool IsFinished() const { return finished_; }
+
 private: // メンバ変数
 
 	enum class Phase {
@@ -84,6 +86,7 @@ private: // メンバ変数
 
 	std::list<Enemy*> enemies_;
 
+	bool finished_ = false;
 	Phase phase_;
 
 	DeathParticles* deathParticles_ = nullptr;
