@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "CameraController.h"
 #include "DebugCamera.h"
+#include "DeathParticles.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
 #include "Input.h"
@@ -47,6 +48,12 @@ public: // メンバ関数
 	void Draw();
 
 private: // メンバ変数
+
+	enum class Phase {
+		kPlay,	// ゲームプレイ
+		kDeath,	// デス演出
+	};
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -65,6 +72,7 @@ private: // メンバ変数
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelEnemy_ = nullptr;
+	Model* modelDeathParticle_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
 	// デバッグカメラ
@@ -76,7 +84,17 @@ private: // メンバ変数
 
 	std::list<Enemy*> enemies_;
 
+	Phase phase_;
+
+	DeathParticles* deathParticles_ = nullptr;
+
+	void ChangePhase();
+
 	void GenerateBlocks();
+
+	void UpdateCamera();
+
+	void UpdateBlocks();
 
     /// <summary>
 	/// 衝突判定と応答

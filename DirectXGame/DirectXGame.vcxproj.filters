@@ -102,6 +102,9 @@
     <ClCompile Include="actor\CameraController.cpp">
       <Filter>ソース ファイル\actor</Filter>
     </ClCompile>
+    <ClCompile Include="actor\DeathParticles.cpp">
+      <Filter>ソース ファイル\actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="math\AABB.h">
       <Filter>ヘッダー ファイル\math</Filter>
+    </ClInclude>
+    <ClInclude Include="actor\DeathParticles.h">
+      <Filter>ヘッダー ファイル\actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

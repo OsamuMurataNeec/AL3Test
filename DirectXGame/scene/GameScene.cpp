@@ -8,6 +8,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 
+	delete deathParticles_;
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
@@ -18,6 +19,7 @@ GameScene::~GameScene() {
 			worldTransformBlock = nullptr;
 		}
 	}
+	delete modelDeathParticle_;
 	delete modelEnemy_;
 	delete modelPlayer_;
 	delete modelBlock_;
@@ -44,6 +46,7 @@ void GameScene::Initialize() {
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("SkyDome", true);
+	modelDeathParticle_ = Model::CreateFromOBJ("deathParticle", true);
 
 	// マップチップフィールドの生成
 	mapChipField_ = new MapChipField;
@@ -79,50 +82,47 @@ void GameScene::Initialize() {
 	newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
 
 	enemies_.push_back(newEnemy);
+
+	phase_ = Phase::kPlay;
 }
 
 void GameScene::Update() {
 
-	worldTransformSkydome_.UpdateMatrix();
+	ChangePhase();
 
-	// 自キャラの更新
-	player_->Update();
+	switch (phase_) {
+	case Phase::kPlay:
+		worldTransformSkydome_.UpdateMatrix();
 
-	for (Enemy* enemy : enemies_) {
-		enemy->Update();
-	}
+		// 自キャラの更新
+		player_->Update();
 
-	cameraController->Update();
+		cameraController->Update();
 
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_0)) {
-		// フラグをトグル
-		isDebugCameraActive_ = !isDebugCameraActive_;
-	}
-#endif
-	if (isDebugCameraActive_) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		// ビュープロジェクションの転送
-		viewProjection_.TransferMatrix();
-	} else {
-		viewProjection_.matView = cameraController->GetViewProjection().matView;
-		viewProjection_.matProjection = cameraController->GetViewProjection().matProjection;
-		// ビュープロジェクションの転送
-		viewProjection_.TransferMatrix();
-	}
-
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform*& worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock)
-				continue;
-
-			worldTransformBlock->UpdateMatrix();
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
 		}
-	}
 
-	CheckAllCollisions();
+		UpdateCamera();
+
+		UpdateBlocks();
+
+		CheckAllCollisions();
+		break;
+	case Phase::kDeath:
+		worldTransformSkydome_.UpdateMatrix();
+
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
+		}
+
+		if (deathParticles_) {
+			deathParticles_->Update();
+		}
+
+		UpdateCamera();
+		break;
+	}
 }
 
 void GameScene::Draw() {
@@ -162,11 +162,17 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlock, viewProjection_);
 		}
 	}
-	// 自キャラの描画
-	player_->Draw();
+	if (!player_->IsDead()) {
+		// 自キャラの描画
+		player_->Draw();
+	}
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
+	}
+
+	if (deathParticles_) {
+		deathParticles_->Draw();
 	}
 
 	// 3Dオブジェクト描画後処理
@@ -185,6 +191,25 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::ChangePhase() {
+	switch (phase_) {
+	case Phase::kPlay:
+		if (player_->IsDead()) {
+			// 死亡演出
+			phase_ = Phase::kDeath;
+
+			const Vector3& deathParticlesPosition = player_->GetWorldPosition();
+
+			deathParticles_ = new DeathParticles;
+			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
+		}
+		break;
+	case Phase::kDeath:
+
+		break;
+	}
 }
 
 void GameScene::GenerateBlocks() {
@@ -208,6 +233,38 @@ void GameScene::GenerateBlocks() {
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 			}
+		}
+	}
+}
+
+void GameScene::UpdateCamera() {
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_0)) {
+		// フラグをトグル
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+#endif
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		// ビュープロジェクションの転送
+		viewProjection_.TransferMatrix();
+	} else {
+		viewProjection_.matView = cameraController->GetViewProjection().matView;
+		viewProjection_.matProjection = cameraController->GetViewProjection().matProjection;
+		// ビュープロジェクションの転送
+		viewProjection_.TransferMatrix();
+	}
+}
+
+void GameScene::UpdateBlocks() {
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform*& worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock)
+				continue;
+
+			worldTransformBlock->UpdateMatrix();
 		}
 	}
 }

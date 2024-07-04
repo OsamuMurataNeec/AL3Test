@@ -11,6 +11,7 @@
   ImGuiManager.cpp
   WorldTransformEx.cpp
   CameraController.cpp
+  DeathParticles.cpp
   Enemy.cpp
   Player.cpp
   DirectXCommon.cpp
