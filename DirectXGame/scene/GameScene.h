@@ -4,6 +4,7 @@
 #include "CameraController.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
+#include "Enemy.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
@@ -62,6 +63,7 @@ private: // メンバ変数
 	Model* modelPlayer_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
+	Model* modelEnemy_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
 	// デバッグカメラ
@@ -70,6 +72,8 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	MapChipField* mapChipField_;
 	CameraController* cameraController = nullptr;
+
+	Enemy* enemy_ = nullptr;
 
 	void GenerateBlocks();
 };
