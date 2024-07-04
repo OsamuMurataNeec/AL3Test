@@ -21,6 +21,8 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete mapChipField_;
+
+
 }
 
 void GameScene::Initialize() {
