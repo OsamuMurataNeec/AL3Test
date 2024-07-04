@@ -61,6 +61,12 @@
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{64e4b42a-c295-45b6-ba93-c47df1e2e956}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\object">
+      <UniqueIdentifier>{ce007854-d279-4169-968b-88dbd6b93901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\object">
+      <UniqueIdentifier>{ae433439-215d-4d46-9aa1-7db4d18ba95c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="3d\WorldTransformEx.cpp">
       <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="object\MapChipField.cpp">
+      <Filter>ソース ファイル\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="math\MathUtilityForText.h">
       <Filter>ヘッダー ファイル\math</Filter>
+    </ClInclude>
+    <ClInclude Include="object\MapChipField.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

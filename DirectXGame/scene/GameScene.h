@@ -4,6 +4,7 @@
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
+#include "MapChipField.h"
 #include "Model.h"
 #include "Player.h"
 #include "Sprite.h"
@@ -66,4 +67,7 @@ private: // メンバ変数
 	DebugCamera* debugCamera_ = nullptr;
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
+	MapChipField* mapChipField_;
+
+	void GenerateBlocks();
 };
